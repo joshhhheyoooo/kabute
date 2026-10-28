@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14040a">
+<title>:3</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9D%A4%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+
+:root{
+  --crimson:#c1121f;
+  --crimson-bright:#e63946;
+  --burgundy:#5a0f1e;
+  --cherry:#2b0711;
+  --night:#12040a;
+  --blush:#f7c6ce;
+  --blush-soft:#fbe3e7;
+  --cream:#fff6ef;
+  --text:#fff6ef;
+  --text-dim:#e9cfd3;
+  --glass:rgba(255,246,239,.06);
+  --glass-border:rgba(247,198,206,.18);
+  --radius:22px;
+  --hand:"Segoe Print","Bradley Hand","Comic Sans MS","Chalkboard SE",cursive;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);color:var(--text);background:var(--night);
+  line-height:1.65;overflow-x:hidden;min-height:100vh;
+}
+body.locked{overflow:hidden;height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--blush);outline-offset:3px;border-radius:8px}
+
+
+#bg{position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(1200px 700px at 80% -10%,rgba(193,18,31,.32),transparent 60%),
+    radial-gradient(900px 600px at 0% 100%,rgba(90,15,30,.55),transparent 60%),
+    linear-gradient(180deg,#1b0610 0%,#12040a 60%,#0b0206 100%);}
+#particles{position:fixed;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}
+
+
+#progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:50;background:rgba(255,255,255,.05);opacity:0;transition:opacity .6s}
+#progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--burgundy),var(--crimson-bright),var(--blush));box-shadow:0 0 12px var(--crimson-bright);transition:width .6s ease}
+#progressLabel{position:fixed;top:10px;left:14px;z-index:50;font-size:.72rem;letter-spacing:.08em;color:var(--text-dim);opacity:0;transition:opacity .6s;background:rgba(18,4,10,.55);padding:3px 10px;border-radius:99px;border:1px solid var(--glass-border);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+body.entered #progress,body.entered #progressLabel{opacity:1}
+
+
+#nav{position:fixed;right:10px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .6s}
+body.entered #nav{opacity:1;pointer-events:auto}
+#nav button{width:26px;height:26px;display:grid;place-items:center;border-radius:50%}
+#nav button span{width:8px;height:8px;border-radius:50%;background:rgba(247,198,206,.3);transition:.3s;display:block}
+#nav button.active span{background:var(--crimson-bright);box-shadow:0 0 10px var(--crimson-bright);transform:scale(1.5)}
+#nav button:hover span{background:var(--blush)}
+#nav button em{position:absolute;right:30px;font-style:normal;font-size:.72rem;background:rgba(18,4,10,.85);border:1px solid var(--glass-border);padding:2px 9px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
+#nav button{position:relative}
+@media (hover:hover){#nav button:hover em{opacity:1}}
+
+
+body.gating #welcome{display:none}
+#gate{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;
+  background:radial-gradient(900px 600px at 50% 35%,#5a0f1e 0%,#2b0711 50%,#12040a 100%);
+  transition:opacity 1s ease,transform 1s ease,visibility 1s}
+#gate.leaving{opacity:0;transform:scale(1.05);visibility:hidden}
+.gate-card{width:100%;max-width:460px;text-align:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:30px 22px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 50px rgba(193,18,31,.2)}
+.gate-card.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.gate-step{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--blush);opacity:.85}
+.gate-dots{display:flex;gap:8px;justify-content:center;margin:10px 0 18px}
+.gate-dots i{width:9px;height:9px;border-radius:50%;background:rgba(247,198,206,.25);transition:.4s}
+.gate-dots i.on{background:var(--crimson-bright);box-shadow:0 0 10px var(--crimson-bright)}
+.gate-dots i.done{background:var(--blush)}
+#gateQ{font-family:var(--serif);font-weight:400;font-size:clamp(1.3rem,5.4vw,1.8rem);line-height:1.35;margin-bottom:20px;animation:rise .7s ease both}
+#gateForm{display:flex;flex-direction:column;gap:12px}
+#gateInput{width:100%;padding:14px 16px;font:inherit;font-size:1rem;color:var(--cream);background:rgba(18,4,10,.6);border:1px solid var(--glass-border);border-radius:99px;text-align:center;outline:none;transition:border-color .3s,box-shadow .3s}
+#gateInput::placeholder{color:rgba(233,207,211,.5)}
+#gateInput:focus{border-color:var(--crimson-bright);box-shadow:0 0 0 3px rgba(230,57,70,.25)}
+.gate-msg{margin-top:16px;min-height:1.6em;font-family:var(--hand);font-size:1.1rem}
+.gate-msg.good{color:var(--blush-soft);text-shadow:0 0 16px rgba(230,57,70,.7)}
+.gate-hint{margin-top:8px;min-height:2.4em;font-size:.95rem;color:var(--blush);line-height:1.5}
+.gate-hint:not(:empty){animation:rise .5s ease both}
+
+
+#welcome{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;
+  background:radial-gradient(900px 600px at 50% 40%,#5a0f1e 0%,#2b0711 45%,#12040a 100%);
+  transition:opacity 1.1s ease,transform 1.1s ease,visibility 1.1s}
+#welcome.leaving{opacity:0;transform:scale(1.06);visibility:hidden}
+#welcome h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,9vw,4.4rem);letter-spacing:.01em;text-shadow:0 0 30px rgba(230,57,70,.55);animation:rise 1.4s ease both}
+#welcome p{margin-top:12px;color:var(--text-dim);font-size:1.1rem;animation:rise 1.4s .5s ease both}
+#welcome .btn{margin-top:38px;animation:rise 1.4s 1s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+
+.btn{display:inline-block;padding:14px 28px;border-radius:99px;font-size:1rem;letter-spacing:.02em;
+  background:linear-gradient(135deg,var(--crimson),var(--burgundy));border:1px solid rgba(247,198,206,.35);
+  box-shadow:0 8px 28px rgba(193,18,31,.35),inset 0 1px 0 rgba(255,255,255,.18);
+  transition:transform .2s,box-shadow .3s,filter .3s;min-height:48px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(230,57,70,.45),inset 0 1px 0 rgba(255,255,255,.22);filter:brightness(1.08)}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:var(--glass);box-shadow:none;border-color:var(--glass-border)}
+.btn.ghost:hover{background:rgba(255,246,239,.12)}
+
+
+main{position:relative;z-index:5;opacity:0;visibility:hidden;transition:opacity 1.2s .3s}
+body.entered main{opacity:1;visibility:visible}
+section{min-height:100vh;min-height:100svh;padding:90px 22px 70px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.wrap{width:100%;max-width:640px}
+.eyebrow{font-size:.75rem;letter-spacing:.28em;text-transform:uppercase;color:var(--blush);opacity:.8;margin-bottom:10px}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,6.5vw,2.7rem);line-height:1.2;margin-bottom:18px}
+.sub{color:var(--text-dim);margin-bottom:26px}
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:26px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease}
+.reveal.in{opacity:1;transform:none}
+.center{text-align:center}
+
+
+.about p{margin-bottom:14px;font-size:1.05rem}
+.about p:last-child{margin-bottom:0}
+.scrollhint{margin-top:26px;text-align:center;color:var(--text-dim);font-size:.85rem;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(6px)}}
+
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:560px){.cards{grid-template-columns:repeat(3,1fr)}}
+.card{perspective:900px;height:150px}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,.9,.3,1);transform-style:preserve-3d}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:14px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid var(--glass-border)}
+.front{background:linear-gradient(160deg,rgba(193,18,31,.5),rgba(90,15,30,.7));font-family:var(--serif);font-size:1.02rem;flex-direction:column;gap:6px;box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.14)}
+.front small{font-size:.68rem;letter-spacing:.14em;color:var(--blush);text-transform:uppercase;opacity:.8}
+.back{transform:rotateY(180deg);background:linear-gradient(160deg,var(--cream),var(--blush-soft));color:#4a0d19;font-size:.9rem;line-height:1.45;box-shadow:0 0 28px rgba(230,57,70,.35)}
+.card:hover .front{filter:brightness(1.15)}
+.card button{position:absolute;inset:0;width:100%;height:100%;border-radius:var(--radius);z-index:2}
+
+
+.box{text-align:center}
+.note{min-height:150px;display:flex;align-items:center;justify-content:center;font-family:var(--hand);font-size:1.25rem;line-height:1.5;padding:18px 8px;color:var(--cream);transition:opacity .35s,transform .35s}
+.note.swap{opacity:0;transform:translateY(8px)}
+.note-tag{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blush);min-height:1.2em}
+.counter{margin-top:12px;font-size:.78rem;color:var(--text-dim)}
+
+
+.songs{display:flex;flex-direction:column;gap:14px}
+.song{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border)}
+.disc{flex:0 0 52px;height:52px;border-radius:50%;background:radial-gradient(circle,var(--night) 0 10%,var(--crimson) 11% 38%,var(--burgundy) 39% 100%);box-shadow:0 0 18px rgba(230,57,70,.4);position:relative;margin-top:2px}
+.disc::after{content:"";position:absolute;inset:44%;border-radius:50%;background:var(--cream)}
+.song h3{font-family:var(--serif);font-weight:400;font-size:1.1rem}
+.song .artist{color:var(--blush);font-size:.85rem;margin-bottom:6px}
+.song .why{color:var(--text-dim);font-size:.92rem}
+.song a{display:inline-block;margin-top:10px;font-size:.85rem;color:var(--cream);text-decoration:none;padding:7px 16px;border-radius:99px;border:1px solid var(--crimson-bright);background:rgba(193,18,31,.25);transition:.2s}
+.song a:hover{background:var(--crimson)}
+.song .nolink{display:inline-block;margin-top:8px;font-size:.78rem;opacity:.55}
+.song > div:last-child{flex:1;min-width:0}
+.player{display:flex;align-items:center;gap:10px;margin-top:12px}
+.pbtn{flex:0 0 42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1rem;padding-left:2px;
+  background:linear-gradient(135deg,var(--crimson),var(--burgundy));border:1px solid rgba(247,198,206,.4);box-shadow:0 4px 16px rgba(193,18,31,.4);transition:transform .2s}
+.pbtn:active{transform:scale(.92)}
+.pbtn.playing{padding-left:0;box-shadow:0 0 22px rgba(230,57,70,.7)}
+.seek{flex:1;min-width:0;accent-color:var(--crimson-bright);height:24px}
+.time{font-size:.75rem;color:var(--text-dim);min-width:2.6em;text-align:right;font-variant-numeric:tabular-nums}
+.perr{font-size:.8rem;color:var(--blush);margin-top:8px}
+.song.is-playing .disc{animation:spin 3s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+
+.smile-grid{display:grid;gap:14px}
+.mini{padding:20px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border);text-align:center}
+.mini h3{font-family:var(--serif);font-weight:400;font-size:1.1rem;margin-bottom:10px}
+.out{min-height:3.2em;margin:6px 0 14px;color:var(--cream);transition:opacity .3s}
+.orb{width:92px;height:92px;border-radius:50%;margin:6px auto 12px;display:block;
+  background:radial-gradient(circle at 35% 30%,#ff8d96,var(--crimson-bright) 40%,var(--burgundy) 100%);
+  box-shadow:0 0 30px 6px rgba(230,57,70,.55),0 0 80px 18px rgba(193,18,31,.3);animation:pulse 3s ease-in-out infinite;transition:transform .2s}
+.orb:active{transform:scale(.9)}
+@keyframes pulse{50%{box-shadow:0 0 44px 10px rgba(230,57,70,.7),0 0 110px 26px rgba(193,18,31,.35);transform:scale(1.05)}}
+.secret-star{display:inline-block;margin-top:18px;font-size:.9rem;opacity:.25;transition:.4s;padding:10px}
+.secret-star:hover,.secret-star:focus-visible{opacity:.9}
+.unlock{margin-top:14px;padding:16px;border-radius:var(--radius);text-align:center;font-family:var(--hand);background:linear-gradient(135deg,rgba(193,18,31,.35),rgba(90,15,30,.5));border:1px solid var(--crimson-bright);box-shadow:0 0 30px rgba(230,57,70,.3);display:none}
+.unlock.show{display:block;animation:rise .8s ease both}
+
+
+.env-stage{display:flex;flex-direction:column;align-items:center}
+.envelope{position:relative;width:min(100%,320px);height:210px;margin:6px auto 0;cursor:pointer;display:block}
+.env-back{position:absolute;inset:0;border-radius:10px;background:linear-gradient(160deg,#7a1424,#3d0a15);box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 40px rgba(193,18,31,.25)}
+.peek{position:absolute;left:12px;right:12px;bottom:14px;height:150px;background:var(--cream);border-radius:6px;transition:transform .9s cubic-bezier(.3,.9,.3,1) .35s;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.envelope.open .peek{transform:translateY(-70px)}
+.pocket{position:absolute;inset:0;border-radius:10px;overflow:hidden;pointer-events:none}
+.pocket::before,.pocket::after{content:"";position:absolute;bottom:0;border-style:solid}
+.pocket::before{left:0;border-width:105px 0 105px 165px;border-color:transparent transparent transparent #8f1a2c}
+.pocket::after{right:0;border-width:105px 165px 105px 0;border-color:transparent #8f1a2c transparent transparent}
+.pocket i{position:absolute;left:0;right:0;bottom:0;height:0;border-style:solid;border-width:0 0 0 0}
+.flap-wrap{position:absolute;left:0;right:0;top:0;height:112px;perspective:700px;z-index:3;pointer-events:none}
+.flap{position:absolute;inset:0;transform-origin:top center;transition:transform .7s ease,z-index 0s .35s;transform-style:preserve-3d;z-index:3}
+.flap::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#a01c30,#7a1424);clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}
+.envelope.open .flap{transform:rotateX(180deg);z-index:0}
+.seal{position:absolute;left:50%;top:92px;transform:translateX(-50%);width:44px;height:44px;border-radius:50%;z-index:4;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%,#ff6b78,var(--crimson) 55%,#6e0e1b);box-shadow:0 3px 10px rgba(0,0,0,.45),inset 0 1px 2px rgba(255,255,255,.4);transition:opacity .4s,transform .5s;pointer-events:none}
+.seal svg{width:20px;height:20px;fill:var(--blush-soft)}
+.envelope.open .seal{opacity:0;transform:translateX(-50%) scale(.4)}
+.env-hint{margin-top:14px;font-size:.85rem;color:var(--text-dim)}
+.letter{width:100%;max-width:520px;overflow:hidden;max-height:0;opacity:0;transform:translateY(-30px);margin-top:0;
+  transition:max-height 1.2s ease .5s,opacity .8s ease .6s,transform 1s ease .55s,margin .6s}
+.letter.show{max-height:1600px;opacity:1;transform:none;margin-top:22px}
+.paper{background:linear-gradient(180deg,#fff9f3,#fbe9e4);color:#4a1a22;border-radius:10px;padding:28px 24px;font-family:var(--hand);font-size:1.08rem;line-height:1.85;box-shadow:0 18px 40px rgba(0,0,0,.45);position:relative}
+.paper::before{content:"";position:absolute;inset:8px;border:1px dashed rgba(193,18,31,.25);border-radius:6px;pointer-events:none}
+.paper p{margin-bottom:12px}
+.paper .sig{text-align:right;margin-top:18px;color:var(--crimson);margin-bottom:0}
+
+
+#proposal .wrap{text-align:center}
+.prop-intro{font-family:var(--hand);font-size:1.3rem;margin-bottom:26px;min-height:3em}
+.ringbox{position:relative;width:150px;height:130px;margin:0 auto;display:block;transition:transform .25s}
+.ringbox:hover{transform:translateY(-3px)}
+.ringbox:active{transform:scale(.95)}
+.rb-glow{position:absolute;left:50%;top:50%;width:230px;height:230px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(230,57,70,.45),transparent 65%);opacity:.5;transition:opacity .8s;pointer-events:none}
+.ringbox.open .rb-glow{opacity:1}
+.rb-base{position:absolute;left:0;right:0;bottom:0;height:70px;border-radius:10px 10px 16px 16px;background:linear-gradient(180deg,#8f1a2c,#4a0c18);box-shadow:0 12px 30px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.15)}
+.rb-base::after{content:"";position:absolute;left:12px;right:12px;top:10px;height:14px;border-radius:7px;background:#220509;box-shadow:inset 0 3px 6px rgba(0,0,0,.7)}
+.rb-lid{position:absolute;left:0;right:0;bottom:60px;height:64px;transform-origin:bottom center;transition:transform .9s cubic-bezier(.3,.9,.3,1);border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,#b3213a,#7a1424);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.rb-lid::after{content:"\2665";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--blush-soft);font-size:1.2rem;opacity:.85}
+.ringbox.open .rb-lid{transform:rotateX(-115deg)}
+.ringbox.open .rb-lid::after{opacity:0}
+.ring-mini{position:absolute;left:50%;bottom:44px;width:56px;transform:translateX(-50%) scale(.2);opacity:0;transition:.9s .45s;z-index:2}
+.ringbox.open .ring-mini{opacity:1;transform:translateX(-50%) translateY(-32px) scale(1);animation:float 3.5s 1.4s ease-in-out infinite}
+@keyframes float{50%{transform:translateX(-50%) translateY(-42px) scale(1)}}
+.tap-hint{margin-top:18px;font-size:.85rem;color:var(--text-dim)}
+.question{max-height:0;overflow:hidden;opacity:0;transition:max-height 1s ease .9s,opacity 1s ease 1s}
+.question.show{max-height:900px;opacity:1}
+.question h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.4rem,5.5vw,2rem);margin:26px 0 22px;text-shadow:0 0 22px rgba(230,57,70,.5)}
+.answers{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.reply{margin-top:22px;font-family:var(--hand);font-size:1.2rem;min-height:5.5em;transition:opacity .4s}
+.reply.swap{opacity:0}
+.reply .big{display:block;font-size:1.35rem;margin-bottom:8px;text-shadow:0 0 18px rgba(230,57,70,.6)}
+.reply small{display:block;margin-top:14px}
+.backq{margin-top:6px;font-size:.85rem;color:var(--blush);text-decoration:underline;text-underline-offset:3px;padding:8px}
+#proposal{position:relative;overflow:hidden}
+.stage{margin-top:6px;min-height:8em}
+.stage > *{animation:rise .6s ease both}
+.pmsg{font-family:var(--hand);font-size:1.25rem;line-height:1.55;margin:24px 0 10px}
+.pask{color:var(--blush);font-size:1.05rem;margin-bottom:18px}
+.stage .btn{margin-top:10px}
+.result{margin-top:14px}
+.result .big{display:block;font-family:var(--hand);font-size:clamp(1.3rem,5.5vw,1.7rem);line-height:1.4;margin:20px 0 12px;text-shadow:0 0 20px rgba(230,57,70,.65);animation:rise .8s ease both}
+.result p{font-family:var(--hand);font-size:1.15rem;line-height:1.6;animation:rise .8s .6s ease both}
+
+.stage{transition:opacity .22s ease,transform .22s ease}
+.stage.leaving{opacity:0;transform:translateY(-6px)}
+@keyframes fall{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.stage.dir-back > *{animation:fall .6s ease both}
+.stage .answers{margin-top:14px}
+
+
+#final{position:relative;overflow:hidden;background:radial-gradient(800px 500px at 50% 100%,rgba(193,18,31,.35),transparent 70%)}
+#final .wrap{text-align:center;position:relative;z-index:2}
+#final h2{font-family:var(--hand);font-size:clamp(1.5rem,5.5vw,2.1rem);line-height:1.5}
+.secret{margin-top:26px;padding:22px;border-radius:var(--radius);font-family:var(--hand);font-size:1.15rem;line-height:1.7;background:linear-gradient(135deg,rgba(193,18,31,.35),rgba(43,7,17,.8));border:1px solid var(--crimson-bright);box-shadow:0 0 50px rgba(230,57,70,.35);max-height:0;overflow:hidden;opacity:0;padding-top:0;padding-bottom:0;border-width:0;transition:max-height 1s ease,opacity 1s,padding .6s}
+.secret.show{max-height:600px;opacity:1;padding:22px;border-width:1px}
+footer{position:relative;z-index:5;text-align:center;padding:18px 0 34px;font-size:.78rem;color:var(--text-dim);opacity:.6}
+
+
+.heart-fx{position:fixed;z-index:200;pointer-events:none;font-size:var(--s,18px);will-change:transform,opacity;animation:burst var(--d,1.6s) ease-out forwards}
+@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.1) rotate(var(--r,0deg))}}
+.drift{position:absolute;bottom:-30px;pointer-events:none;color:var(--crimson-bright);opacity:0;animation:drift var(--d,9s) linear forwards;text-shadow:0 0 12px rgba(230,57,70,.8)}
+@keyframes drift{0%{opacity:0;transform:translateY(0) translateX(0)}15%{opacity:.8}100%{opacity:0;transform:translateY(-70vh) translateX(var(--x,20px))}}
+.stars{position:absolute;inset:0;pointer-events:none}
+
+
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,30px);z-index:150;max-width:min(92vw,420px);padding:14px 20px;border-radius:18px;background:rgba(43,7,17,.94);border:1px solid var(--crimson-bright);box-shadow:0 10px 40px rgba(0,0,0,.6),0 0 30px rgba(230,57,70,.3);text-align:center;font-family:var(--hand);opacity:0;pointer-events:none;transition:.6s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:420px){
+  section{padding:84px 16px 60px}
+  .glass{padding:20px}
+  .card{height:140px}
+  #nav{right:4px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body class="locked gating">
+
+<div id="bg"></div>
+<canvas id="particles" aria-hidden="true"></canvas>
+<div id="progress" aria-hidden="true"><i></i></div>
+<div id="progressLabel" aria-live="off">0% explored</div>
+<nav id="nav" aria-label="sections"></nav>
+
+
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateQ">
+  <div class="gate-card">
+    <div class="gate-step" id="gateStep">question 1 of 2</div>
+    <div class="gate-dots" aria-hidden="true"><i class="on"></i><i></i></div>
+    <h1 id="gateQ"></h1>
+    <form id="gateForm" autocomplete="off">
+      <input id="gateInput" type="text" enterkeyhint="go" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="your answer" placeholder="type your answer...">
+      <button class="btn" type="submit" id="gateBtn">answer</button>
+    </form>
+    <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+    <div class="gate-hint" id="gateHint" aria-live="polite"></div>
+  </div>
+</div>
+
+
+<div id="welcome">
+  <h1>hi babyyy &lt;3</h1>
+  <p>this is for you and yours only po</p>
+  <button class="btn" id="openBtn">open this</button>
+</div>
+
+<main id="main">
+
+  
+  <section id="about" data-label="hi">
+    <div class="wrap reveal">
+      <div class="eyebrow">hmmm</div>
+      <h2>for you</h2>
+      <div class="glass about">
+        <p>hi shay or love or baby or mahall. so, wala me magawa habang wala u that's why i create this for u. i just wanted to create this hihi.</p>
+        <p>honestly shay, you deserve to feel appreciated, and it's actually doesn't take much. i hope this small gesture is enough to make your day feel a little lighter(and i hope na sana balik balikan mo siya hshs).</p>
+        <p>so take your time, tap around this hshs, and see kung ano pinaggagawa ko here.</p>
+      </div>
+      <div class="scrollhint">keep scrolling &darr;</div>
+    </div>
+  </section>
+
+ 
+  <section id="appreciate" data-label="things i appreciate">
+    <div class="wrap reveal">
+      <div class="eyebrow">tap a card</div>
+      <h2>things i appreciate about you</h2>
+      <p class="sub">small stuff, but for me important siya.</p>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+
+
+  <section id="messages" data-label="message box">
+    <div class="wrap reveal">
+      <div class="eyebrow">random boxuuu</div>
+      <h2>goodluck sa mga mababasa mo hshs</h2>
+      <div class="glass box">
+        <div class="note-tag" id="noteTag">&nbsp;</div>
+        <div class="note" id="noteText">tap the button and see what's inside baby</div>
+        <button class="btn" id="noteBtn">open a note</button>
+        <div class="counter" id="noteCounter"></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="playlist" data-label="playlist">
+    <div class="wrap reveal">
+      <div class="eyebrow">a playlist for u baby</div>
+      <h2>songs i picked</h2>
+      <p class="sub">play only if you feel like it okieee?</p>
+      <div class="songs" id="songs"></div>
+    </div>
+  </section>
+
+  
+  <section id="smile" data-label="little things">
+    <div class="wrap reveal">
+      <div class="eyebrow">random things hshs</div>
+      <h2>i hope this makes you smile</h2>
+      <div class="smile-grid">
+        <div class="mini">
+          <h3>compliment machine</h3>
+          <div class="out" id="compOut">press the button.</div>
+          <button class="btn" id="compBtn">give me one</button>
+        </div>
+        <div class="mini">
+          <h3>the glowing red orb hehe</h3>
+          <button class="orb" id="orb" aria-label="glowing red orb, tap it"></button>
+          <div class="out" id="orbOut">it looks tappable, diba?</div>
+        </div>
+        <div class="mini">
+          <h3>super random thinggg</h3>
+          <div class="out" id="playOut">tap for something silly hshs</div>
+          <button class="btn ghost" id="playBtn">generate</button>
+        </div>
+      </div>
+      <div class="unlock" id="unlock"></div>
+      <div class="center"><button class="secret-star" id="secretStar" aria-label="a tiny star">&#10022;</button></div>
+    </div>
+  </section>
+
+  
+  <section id="letter" data-label="letter">
+    <div class="wrap reveal env-stage">
+      <div class="eyebrow">another letter for u </div>
+      <h2 class="center">for you, shayy</h2>
+      <button class="envelope" id="envelope" aria-expanded="false" aria-controls="letterBox" aria-label="envelope, tap to open or close">
+        <div class="env-back"></div>
+        <div class="peek"></div>
+        <div class="pocket"></div>
+        <div class="flap-wrap"><div class="flap"></div></div>
+        <div class="seal"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2 0 3.6 1 5.4 3 1.8-2 3.4-3 5.4-3 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/></svg></div>
+      </button>
+      <div class="env-hint" id="envHint">tap the envelope</div>
+      <div class="letter" id="letterBox" aria-hidden="true">
+       
+        <div class="paper">
+          <p>hi babyy,</p>
+          <p>me wasn't sure what to write here, so i'll keep it simple. i made this site because i wanted to do something nice for you(again and i hope hindi u magsawaa), and this felt like a good way to do it.(?)</p>
+          <p>i hope you've been taking care of yourself there , mahal. rest when you need to, eat properly, and be a little kinder to yourself on the hard days okiee?</p>
+          <p>this isn't meant to be a big deal or to ask anything of you. it's just a small gesture to brighten your day, and if it made you smile even once, then it did its job.</p>
+          <p>thanks for being you, and for reading all this.</p>
+          <p class="sig">- kabute</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="proposal">
+    <div class="wrap reveal">
+      <p class="prop-intro" id="propIntro"> wait... i have one tiny question for you hshsh</p>
+      <button class="ringbox" id="ringbox" aria-label="tap to open the little box">
+        <span class="rb-glow"></span>
+        <span class="rb-base"></span>
+        <svg class="ring-mini" viewBox="0 0 80 90" aria-hidden="true">
+          <use href="#ringSvg"/>
+        </svg>
+        <span class="rb-lid"></span>
+      </button>
+      <div class="tap-hint" id="propHint">tap the box</div>
+
+      <div class="question" id="question" aria-live="polite">
+        <svg viewBox="0 0 80 90" width="120" height="135" aria-hidden="true" style="filter:drop-shadow(0 0 18px rgba(255,120,130,.7));margin-top:16px;animation:float2 4s ease-in-out infinite"><use href="#ringSvg"/></svg>
+        <div class="stage" id="stage"></div>
+        <div class="result" id="result"></div>
+        <div class="stars" id="propFx" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="final" data-label="the end">
+    <div class="stars" id="finalStars"></div>
+    <div class="wrap reveal">
+      <h2>anyway, shay, i hope this really made you smile. that's all i wanted talaga :))</h2>
+      <button class="btn" id="lastBtn">one last thing</button>
+      
+<div class="secret" id="secret" aria-live="polite">
+  actually, shay, you don't have to say or do anything after this
+  okayy? like i sad nga kanina, i just wanted to make something that could make you smile,
+  even just for a little while. no pressure, no expectations,
+  just me wanting to make you feel special :))<br><br>
+
+  and if you're smiling right now, then huhu, i guess i did
+  something right. i wish i could see it tho, i bet it's really cute.<br><br>
+
+  thank you for being you, shay. and if there's one thing i hope
+  you never forget, it's that you deserve to be loved gently,
+  genuinely, and without having to ask for it.<br><br>
+
+  and if i get to be one of the reasons you smile today,
+  then that's already enough for me.<br><br>
+
+  i love youu, my shay
+</div>
+    </div>
+  </section>
+
+</main>
+<footer>just for shay and shay only &middot;</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff6ef"/><stop offset=".5" stop-color="#f7c6ce"/><stop offset="1" stop-color="#d89aa5"/>
+    </linearGradient>
+    <radialGradient id="gem" cx=".35" cy=".3" r=".8">
+      <stop offset="0" stop-color="#ffd0d5"/><stop offset=".35" stop-color="#e63946"/><stop offset="1" stop-color="#7a0f1d"/>
+    </radialGradient>
+    <symbol id="ringSvg" viewBox="0 0 80 90">
+      <circle cx="40" cy="58" r="22" fill="none" stroke="url(#band)" stroke-width="6"/>
+      <circle cx="40" cy="58" r="22" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2" stroke-dasharray="3 140" stroke-dashoffset="-20"/>
+      <path d="M31 30 L40 20 L49 30 L40 40 Z" fill="url(#gem)" stroke="#fff6ef" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M31 30 H49 M40 20 L36 30 L40 40 L44 30 Z" fill="none" stroke="rgba(255,255,255,.5)" stroke-width=".8"/>
+      <path d="M33 38 L40 42 L47 38" fill="none" stroke="url(#band)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="26" cy="22" r="1.6" fill="#fff6ef"/><circle cx="55" cy="26" r="1.2" fill="#fff6ef"/><circle cx="58" cy="14" r="1" fill="#f7c6ce"/>
+    </symbol>
+  </defs>
+</svg>
+<style>@keyframes float2{50%{transform:translateY(-6px)}}</style>
+
+<script>
+
+const CARDS = [
+  {
+    front: "your stubbornness",
+    back: "you really have your own mind, don't you? hshs. honestly, it's one of the things that makes you, you."
+  },
+  {
+    front: "your smile",
+    back: "i hope you get more reasons to smile, and maybe i can be one of them sometimes."
+  },
+  {
+    front: "the little things",
+    back: "even the smallest things about you can make my ordinary day feel a little more special."
+  },
+  {
+    front: "your own little world",
+    back: "i like getting to know the things you love, the things you think about, and the little things that make you happy."
+  },
+  {
+    front: "being around you",
+    back: "i don't think you realize how easily you can make someone enjoy even the simplest moments."
+  },
+  {
+    front: "a little confession",
+    back: "if i ever get to call you mine, i hope i get to keep discovering new reasons to appreciate you."
+  }
+];
+
+
+const NOTES = [
+  {
+    tag: "just a thought",
+    text: "you're actually really comfy to talk to. i hope sa susunod we get to make more little memories together."
+  },
+  {
+    tag: "a gentle reminder",
+    text: "don't forget to take care of yourself too, okay? you deserve the same kindness you give to others."
+  },
+  {
+    tag: "for your bad days",
+    text: "you don't have to be okay all the time. take your time, breathe a little, and let tomorrow come when it comes."
+  },
+  {
+    tag: "hehe",
+    text: "how am i supposed to act normal when you're being this cute? hshshs"
+  },
+  {
+    tag: "in case you forgot",
+    text: "there's someone who's genuinely happy to have met you. i'll let you guess who."
+  },
+  {
+    tag: "a little reminder",
+    text: "you don't have to do anything special to be appreciated. being yourself is already enough."
+  },
+  {
+    tag: "one little secret",
+    text: "if i had to choose someone to make more memories with, i have a feeling i'd keep choosing you."
+  }
+];
+
+
+
+const COMPLIMENTS = [
+  "u have no idea how much i like seeing u happy, shay :))",
+  "i hope u know na u don't have to be okay all the time, okayy?",
+  "you're so easy to adore, it's actually a problem for me hshs.",
+  "i wish u could see yourself through my eyes, kahit once lang.",
+  "i like listening to u, kahit random thoughts pa yan.",
+  "u don't have to do anything special for me to like u, just be u.",
+  "i hope i can make your bad days a little less heavy, kahit papaano.",
+  "you're cute, but i think u already know that. nakakainis ka talaga.",
+  "i genuinely like getting to know every little thing about u.",
+  "i hope u never feel like u have to earn my kindness, shay.",
+  "alam mo, i could listen to u yap about anything and still want more.",
+  "i like how u can make me smile without even trying.",
+  "i hope u're being kind to yourself today, kasi i'll always wish that for u.",
+  "sometimes i catch myself smiling at our conversations. kasalanan mo 'to.",
+  "u deserve to be loved without having to question if u're enough.",
+  "i wanna know the little things about u too, not just the things everyone sees.",
+  "i hope u know na u can tell me when things get heavy, okay? i'll listen.",
+  "i don't think u realize how precious u are to me huhu.",
+  "i like u on your good days, and i won't suddenly think less of u on your bad ones.",
+  "i hope life gives u more reasons to smile than to overthink.",
+  "you're becoming one of my favorite people to talk to, and it's all your fault.",
+  "if i could give u one thing, it'd be the chance to see how lovable u really are.",
+  "i'd still wanna know u even if we had to start our conversations all over again.",
+  "u can be makulit, stubborn, sleepy, or moody. you're still shay, and i still like u.",
+  "i don't need u to be perfect, okayy? i'm fond of u just the way u are.",
+  "i hope i make u feel appreciated, even through my little silly moments.",
+  "i swear i'm trying to act normal about u, but you're making it difficult hshs.",
+  "sometimes i just wanna hug u and let u forget about everything for a while.",
+  "i want u to have someone u can be soft with, without being scared of it.",
+  "i may not always know the right words, but i'll always try to understand u.",
+  "lowkey, one of my favorite things lately is having u in my life.",
+  "i hope u smile whenever u remember that there's someone here who's really fond of u.",
+  "you're not a burden for having bad days, shay. please remember that.",
+  "i like hearing about your day, even when u think nothing interesting happened.",
+  "if being cute was a crime, i fear you'd be serving a life sentence.",
+  "how am i supposed to be normal when it's literally u?",
+  "i'd tease u all day, but i'd also be the first to check if you're okay.",
+  "i think i could keep finding new reasons to like u, even on the most ordinary days.",
+  "i hope i get to see more of your smiles, hear more of your stories, and know more of u.",
+  "and just in case u forgot today, i love youu, shay. don't forget that, okay? ♡"
+];
+
+
+
+
+const PLAY_A = [
+  "breaking news:",
+  "shay, excuse me:",
+  "babyyy:",
+  "official announcement:",
+  "psa from your favorite person:",
+  "wait lang, important:",
+  "may sasabihin ako:",
+  "attention, miss shay:",
+  "huii, ikaw:",
+  "one very serious matter:"
+];
+
+const PLAY_B = [
+  "you're legally required to smile at least once today. i don't make the rules hshsh.",
+  "someone's really fond of u. sige nga, guess who.",
+  "have u eaten na ba? this is a very important investigation.",
+  "i think u should take a break. yes, i'm talking to u, miss stubborn.",
+  "i caught myself smiling because of u again. ano bang ginawa mo sakin?",
+  "friendly reminder na cute ka. okay, that's all. carry on.",
+  "i hope something nice happens to u today. preferably something that makes u go hehe.",
+  "u have 0 business being this adorable, love. please explain.",
+  "if you're reading this, consider yourself hugged.",
+  "i was gonna annoy u, but then i remembered that i also wanna spoil u.",
+  "this is your reminder to drink water. i don't wanna see u sick, okayy?",
+  "someone wants to hear about your day, kahit puro random chika pa yan.",
+  "breaking news: shay is still cute. more updates at 11.",
+  "u deserve a peaceful day, a full stomach, and someone who listens to your rant. here's one of them.",
+  "please stop being so lovable. i'm trying to keep my composure here.",
+  "i hope u know na u can be makulit with me anytime. i'll probably be makulit back.",
+  "this announcement was made with 100% affection and approximately 0% shame.",
+  "if today was tiring, pahinga ka muna, okay? the world can wait a little.",
+  "i have an important question: bakit ang cute mo? who authorized this?",
+  "congratulations! you've successfully made someone like u even more today.",
+  "no need to reply to this announcement. just smile for me, kahit konti lang :))",
+  "u know what's unfair? u get to be cute while i'm here catching feelings.",
+  "i hope u never forget that there's someone rooting for u, even on a little things.",
+  "this website would like to formally announce that its creator has a favorite girl. allegedly.",
+  "reminder lang na u don't always have to be strong. minsan, pwede ka rin magpahinga.",
+  "i would say something smooth right now, but it's u, so wala, kinilig na lang ako.",
+  "your smile is requested at this time. refusal is accepted, but highly discouraged hshsh.",
+  "if i could use omen's teleport, i'd probably bother u in person instead of through this website.",
+  "last announcement: i love youu. okay, dismissed na po, miss shay. ♡"
+];
+
+
+
+const ORB = [
+  "you found the glowing thing. 10 points for you.",
+  "this orb has one job: to remind you that you're appreciated.",
+  "it glows a little brighter when you're around. probably(?)",
+  "okay, that's enough poking babyy. (kidding, poke all you want.)"
+];
+
+
+const SURPRISE = "wow, na explore mo ba lahatt? okay, that earns a bonus: you're really sweet for giving this the time. thank you and i appreciate your effort:)";
+
+
+const EASTER_EGG = "easter egg found! you're observant. here's a virtual hugs and kisses from me: &#128588;";
+const STAR_MSG   = "you found the tiny hidden star. nobody finds this one. you're special. (don't tell anyone.)";
+
+
+const SONGS = [
+  {
+  title: "the pool",
+  artist: "stephen sanchez",
+  why: " actually this reminds me that loving someone means being willing to take a chance, even when it means being vulnerable.",
+  file: "Stephen Sanchez - The Pool (Official Audio).mp3",
+  link: ""
+},
+{
+  title: "until i found u",
+  artist: "stephen sanchez",
+  why: "it reminds me of how meeting the right person can make love feel worth believing in again.",
+  file: "Stephen Sanchez - Until I Found You (Lyrics).mp3",
+  link: ""
+},
+{
+  title: "blue",
+  artist: "yung kai",
+  why: "there's something about this song that reminds me of you and the kind of moments i'd love to share with you.",
+  file: "Yung Kai - Blue (Lyrics).mp3",
+  link: ""
+}
+];
+
+
+const GATE = [
+  {
+    question: "first one: what's my favorite color? (hint: it's all over this page hshsh)",
+    answers: ["red", "crimson"],
+    hints: [
+      "it's the color of roses and a certain someone's favorite sweater, maybe...",
+      "think of strawberries, cherries, and stop signs.",
+      "it's literally the color of everything on this page. look around!"
+    ]
+  },
+  {
+    
+    question: "second one: who is this little corner of the internet for?",
+    answers: ["shay"],
+    hints: [
+      "it's the person reading this right now :)",
+      "it's her name. it's on the next screen too.",
+      "starts with an S, ends with a Y. 4 letters."
+    ]
+  }
+];
+const GATE_TEXT = {
+  wrong: ["nopeee, try again hshsh \uD83D\uDE2D", "hmm, not quiteee. here's a little hint for u...", "ur getting closer, think about ittt!", "so close!! one more try, u got this \u2764\uFE0F", "ahhh not yet, but i believe in u HAHAHA"],
+  autoHint: "okay, i'll help a little more:",
+  right: "YAYYY, u got it!! \u2764\uFE0F",
+  passed: "okayyy, u passed! welcome to ur little corner, shay \u2764\uFE0F"
+};
+
+
+const PROP = {
+  start: {
+    question: "sooo, shay... will u marry me? hshsh",
+    yes: "YES, I WILL ",
+    no:  "NO... WAIT HAHAHA "
+  },
+  yes: {
+    stages: [
+      { msg: "WAITTT, U SAID YES???", ask: "are u sureee?", btn: "I'M SUREEE ", back: "WAIT, LET ME THINK " },
+      { msg: "like... REALLY REALLY SURE??? no takebacks after this hshsh ", btn: "100% SURE ", back: "WAITTT HAHAHA" },
+      { msg: "okay, final final question... ready for our advance wedding? HSHSH ", btn: "YES, I DO", back: "TEKAAA HAHAHA" }
+    ],
+    big: "AAAAA SHAY SAID YESSS",
+    small: "okay, i'll remember this forever HAHAHA. welcome to our imaginary wedding era baby hshsh."
+  },
+  no: {
+    stages: [
+      { msg: "HUH??? WAIT A MINUTE HAHAHA ", ask: "are u really sure about thattt?", btn: "YES, I'M SURE ", back: "WAIT, MAYBE I'LL RECONSIDER " },
+      { msg: "last chance to reconsider HAHAHA. sure ka na talaga??", btn: "YES, FINAL ANSWER ", back: "I'M STILL THINKING " },
+      { msg: "okayyy, final answer na talaga? HAHAHA", btn: "FINAL ANSWER ", back: "HOLD ON HAHAHA" }
+    ],
+    big: "HAHAHAHA okayyy, i'll respect the verdict, your honor 😭❤️",
+    small: "thank u for playing along with my little proposal hshsh."
+  }
+};
+
+(function(){
+  "use strict";
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  
+  function makeBag(arr){
+    let bag = [], last = -1;
+    return function(){
+      if(!bag.length){
+        bag = arr.map((_, i) => i);
+        for(let i = bag.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [bag[i], bag[j]] = [bag[j], bag[i]];
+        }
+        if(bag.length > 1 && bag[bag.length - 1] === last){ bag.unshift(bag.pop()); }
+      }
+      last = bag.pop();
+      return last;
+    };
+  }
+
+  
+  const toast = $("#toast"); let toastT;
+  function showToast(html, ms){
+    toast.innerHTML = html; toast.classList.add("show");
+    clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("show"), ms || 4200);
+  }
+
+  
+  const canvas = $("#particles"), ctx = canvas.getContext("2d");
+  let W, H, dots = [], raf;
+  function sizeCanvas(){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = W < 600 ? 34 : 60;
+    dots = Array.from({length: n}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 2.2 + .6,
+      vy: -(Math.random() * .25 + .06),
+      vx: (Math.random() - .5) * .12,
+      a: Math.random() * .5 + .2,
+      t: Math.random() * 6.28,
+      hue: Math.random() < .25 ? "247,198,206" : "230,57,70"
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    for(const d of dots){
+      if(!reduceMotion){
+        d.x += d.vx; d.y += d.vy; d.t += .02;
+        if(d.y < -10){ d.y = H + 10; d.x = Math.random() * W; }
+      }
+      const tw = reduceMotion ? 1 : (.65 + Math.sin(d.t) * .35);
+      const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 5);
+      g.addColorStop(0, "rgba(" + d.hue + "," + (d.a * tw) + ")");
+      g.addColorStop(1, "rgba(" + d.hue + ",0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(d.x, d.y, d.r * 5, 0, 6.283); ctx.fill();
+    }
+    if(!reduceMotion) raf = requestAnimationFrame(draw);
+  }
+  sizeCanvas(); draw();
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { cancelAnimationFrame(raf); sizeCanvas(); draw(); }, 150); });
+  document.addEventListener("visibilitychange", () => {
+    if(document.hidden) cancelAnimationFrame(raf); else if(!reduceMotion){ cancelAnimationFrame(raf); draw(); }
+  });
+
+  
+  function burst(x, y, count, chars){
+    chars = chars || ["\u2764\uFE0F", "\u2665", "\u2728", "\uD83D\uDC96"];
+    count = reduceMotion ? Math.min(count, 6) : count;
+    for(let i = 0; i < count; i++){
+      const el = document.createElement("span");
+      el.className = "heart-fx";
+      el.textContent = chars[Math.floor(Math.random() * chars.length)];
+      const ang = Math.random() * Math.PI * 2, dist = 60 + Math.random() * 140;
+      el.style.left = x + "px"; el.style.top = y + "px";
+      el.style.setProperty("--x", Math.cos(ang) * dist + "px");
+      el.style.setProperty("--y", Math.sin(ang) * dist - 50 + "px");
+      el.style.setProperty("--r", (Math.random() * 60 - 30) + "deg");
+      el.style.setProperty("--s", (12 + Math.random() * 16) + "px");
+      el.style.setProperty("--d", (1.1 + Math.random() * .9) + "s");
+      el.addEventListener("animationend", () => el.remove());
+      document.body.appendChild(el);
+    }
+  }
+  function centerOf(el){ const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+
+  
+  const sections = $$("main section");
+  const navSections = sections.filter(s => s.dataset.label);
+  const visited = new Set();
+  const interacted = new Set();
+  let surpriseShown = false;
+  const bar = $("#progress i"), label = $("#progressLabel");
+
+  function updateProgress(){
+    const total = sections.length;
+    const pct = Math.round((visited.size / total) * 100);
+    bar.style.width = pct + "%";
+    label.textContent = pct + "% explored";
+    checkSurprise();
+  }
+  function checkSurprise(){
+    if(surpriseShown) return;
+    if(visited.size >= sections.length - 2 && interacted.size >= 4){
+      surpriseShown = true;
+      const u = $("#unlock"); u.textContent = SURPRISE; u.classList.add("show");
+      showToast("psst. something unlocked in <b>little things</b> &#10024;", 5000);
+    }
+  }
+  function mark(name){ interacted.add(name); checkSurprise(); }
+
+ 
+  const nav = $("#nav");
+  navSections.forEach(sec => {
+    const b = document.createElement("button");
+    b.setAttribute("aria-label", "go to " + sec.dataset.label);
+    b.innerHTML = "<span></span><em>" + sec.dataset.label + "</em>";
+    b.addEventListener("click", () => sec.scrollIntoView({behavior: reduceMotion ? "auto" : "smooth"}));
+    b.dataset.target = sec.id;
+    nav.appendChild(b);
+  });
+  const dotFor = id => $("#nav button[data-target='" + id + "']");
+
+  /* observers */
+  const revealObs = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting){ e.target.classList.add("in"); revealObs.unobserve(e.target); } });
+  }, {threshold: .12});
+  $$(".reveal").forEach(el => revealObs.observe(el));
+
+  const secObs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if(e.isIntersecting){
+        if(!document.body.classList.contains("entered")) return;
+        visited.add(e.target.id); updateProgress();
+        $$("#nav button").forEach(b => b.classList.remove("active"));
+        const d = dotFor(e.target.id); if(d) d.classList.add("active");
+        if(e.target.id === "final") startFinalHearts(); else stopFinalHearts();
+      }
+    });
+  }, {threshold: .5});
+  sections.forEach(s => secObs.observe(s));
+
+  
+  const GATE_KEY = "shayGatePassed";
+  const gate = $("#gate"), gateCard = $(".gate-card"), gateForm = $("#gateForm"), gateInput = $("#gateInput");
+  const gateQ = $("#gateQ"), gateMsg = $("#gateMsg"), gateHint = $("#gateHint"), gateStep = $("#gateStep");
+  const gateDots = $$(".gate-dots i");
+  let gi = 0, tries = 0, gateBusy = false;
+
+  function norm(s){ return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, ""); }
+  function lev(a, b){
+    let prev = Array.from({length: b.length + 1}, (_, i) => i);
+    for(let i = 1; i <= a.length; i++){
+      const cur = [i];
+      for(let j = 1; j <= b.length; j++){
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+  function isMatch(input, answers){
+    const n = norm(input); if(!n) return false;
+    return answers.some(a => { const t = norm(a); return n === t || (t.length >= 5 && lev(n, t) <= 1); });
+  }
+  function hintFor(q, n){
+    const idx = n - 1;
+    if(idx < q.hints.length) return q.hints[idx];
+    const ans = q.answers[0], reveal = Math.min(idx - q.hints.length + 1, ans.length);
+    const shown = ans.split("").map((ch, i) => (i < reveal || !/[a-z0-9]/i.test(ch)) ? ch : "_").join(" ");
+    return GATE_TEXT.autoHint + " " + shown;
+  }
+  function showQuestion(i){
+    const q = GATE[i];
+    gateQ.style.animation = "none"; void gateQ.offsetWidth; gateQ.style.animation = "";
+    gateQ.textContent = q.question;
+    gateStep.textContent = "question " + (i + 1) + " of " + GATE.length;
+    gateDots.forEach((d, k) => { d.classList.toggle("on", k === i); d.classList.toggle("done", k < i); });
+    gateInput.value = ""; gateMsg.textContent = ""; gateMsg.classList.remove("good"); gateHint.textContent = "";
+    tries = 0;
+    setTimeout(() => { try{ gateInput.focus({preventScroll: true}); }catch(e){} }, 250);
+  }
+  function openWelcome(){
+    document.body.classList.remove("gating");
+    gate.classList.add("leaving");
+    setTimeout(() => { gate.style.display = "none"; }, 1100);
+  }
+  function passGate(){
+    try{ sessionStorage.setItem(GATE_KEY, "1"); }catch(e){}
+    gateForm.style.display = "none"; gateHint.textContent = ""; gateStep.textContent = "";
+    gateDots.forEach(d => { d.classList.remove("on"); d.classList.add("done"); });
+    gateQ.textContent = GATE_TEXT.passed;
+    gateMsg.textContent = "";
+    const [x, y] = centerOf(gateCard); burst(x, y, 30);
+    setTimeout(() => burst(x, y, 18, ["\u2665", "\u2728"]), 500);
+    setTimeout(openWelcome, 3000);
+  }
+  gateForm.addEventListener("submit", e => {
+    e.preventDefault();
+    if(gateBusy) return;
+    const val = gateInput.value.trim();
+    if(!val){ gateMsg.classList.remove("good"); gateMsg.textContent = "type something first, silly hshsh"; return; }
+    const q = GATE[gi];
+    if(isMatch(val, q.answers)){
+      gateBusy = true; gateInput.blur();
+      gateMsg.classList.add("good"); gateMsg.textContent = GATE_TEXT.right; gateHint.textContent = "";
+      const [x, y] = centerOf(gateCard); burst(x, y - 40, 16);
+      setTimeout(() => {
+        gi++;
+        if(gi < GATE.length){ showQuestion(gi); gateBusy = false; }
+        else passGate();
+      }, 1300);
+    } else {
+      tries++;
+      gateCard.classList.remove("shake"); void gateCard.offsetWidth; gateCard.classList.add("shake");
+      gateMsg.classList.remove("good");
+      gateMsg.textContent = GATE_TEXT.wrong[(tries - 1) % GATE_TEXT.wrong.length];
+      gateHint.textContent = hintFor(q, tries);
+      gateInput.select();
+    }
+  });
+  (function initGate(){
+    let passed = false;
+    try{ passed = sessionStorage.getItem(GATE_KEY) === "1"; }catch(e){}
+    if(passed){ document.body.classList.remove("gating"); gate.style.display = "none"; }
+    else showQuestion(0);
+  })();
+
+  
+  $("#openBtn").addEventListener("click", () => {
+    const w = $("#welcome");
+    w.classList.add("leaving");
+    document.body.classList.add("entered");
+    document.body.classList.remove("locked");
+    window.scrollTo(0, 0);
+    const [x, y] = centerOf($("#openBtn"));
+    burst(x, y, 14);
+    setTimeout(() => { w.style.display = "none"; }, 1200);
+    setTimeout(() => { visited.add("about"); updateProgress(); const d = dotFor("about"); if(d) d.classList.add("active"); }, 400);
+  });
+
+  
+  const cardsEl = $("#cards");
+  CARDS.forEach((c, i) => {
+    const d = document.createElement("div"); d.className = "card";
+    d.innerHTML = '<div class="card-inner"><div class="face front"><small>#' + (i + 1) + '</small>' + c.front + '</div><div class="face back">' + c.back + '</div></div><button aria-label="reveal: ' + c.front + '" aria-pressed="false"></button>';
+    const btn = $("button", d);
+    btn.addEventListener("click", () => {
+      const on = d.classList.toggle("flipped");
+      btn.setAttribute("aria-pressed", on);
+      if(on){
+        const [x, y] = centerOf(d); burst(x, y, 5, ["\u2665", "\u2728"]);
+        d.dataset.seen = "1";
+        if($$(".card[data-seen]").length >= 3) mark("cards");
+      }
+    });
+    cardsEl.appendChild(d);
+  });
+
+  
+  const nextNote = makeBag(NOTES), seenNotes = new Set();
+  const noteText = $("#noteText"), noteTag = $("#noteTag"), noteCounter = $("#noteCounter");
+  $("#noteBtn").addEventListener("click", function(){
+    const i = nextNote(); seenNotes.add(i);
+    noteText.classList.add("swap");
+    setTimeout(() => {
+      noteTag.textContent = NOTES[i].tag; noteText.textContent = NOTES[i].text;
+      noteText.classList.remove("swap");
+    }, reduceMotion ? 0 : 280);
+    this.textContent = "another one";
+    noteCounter.textContent = seenNotes.size + " of " + NOTES.length + " notes found";
+    const [x, y] = centerOf(this); burst(x, y - 20, 4, ["\u2665"]);
+    mark("notes");
+  });
+
+  const songsEl = $("#songs");
+  let currentAudio = null;
+  function fmt(t){ if(!isFinite(t)) return "0:00"; const m = Math.floor(t / 60), s = Math.floor(t % 60); return m + ":" + (s < 10 ? "0" : "") + s; }
+  /* in-page player: plays only when she taps play, one song at a time, never autoplays */
+  function buildPlayer(s, card){
+    const audio = new Audio();
+    audio.preload = "none";
+    audio.src = s.file;
+    const p = document.createElement("div"); p.className = "player";
+    p.innerHTML = '<button class="pbtn" aria-label="play ' + s.title.replace(/"/g, "") + '">&#9654;</button><input class="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="seek"><span class="time">0:00</span>';
+    const btn = $(".pbtn", p), seek = $(".seek", p), time = $(".time", p);
+    const info = $("h3", card).parentNode;
+    info.insertBefore(p, $(".why", card).nextSibling);
+    let seeking = false;
+    function setPlaying(on){
+      btn.innerHTML = on ? "&#10074;&#10074;" : "&#9654;";
+      btn.classList.toggle("playing", on);
+      card.classList.toggle("is-playing", on);
+    }
+    btn.addEventListener("click", () => {
+      if(audio.paused){
+        if(currentAudio && currentAudio !== audio) currentAudio.pause();
+        currentAudio = audio;
+        const pr = audio.play();
+        if(pr && pr.catch) pr.catch(() => showErr());
+        mark("music");
+      } else { audio.pause(); }
+    });
+    audio.addEventListener("play", () => setPlaying(true));
+    audio.addEventListener("pause", () => setPlaying(false));
+    audio.addEventListener("ended", () => { setPlaying(false); audio.currentTime = 0; seek.value = 0; time.textContent = fmt(audio.duration); });
+    audio.addEventListener("loadedmetadata", () => { time.textContent = fmt(audio.duration); });
+    audio.addEventListener("timeupdate", () => {
+      if(seeking || !audio.duration) return;
+      seek.value = (audio.currentTime / audio.duration) * 100;
+      time.textContent = fmt(audio.currentTime);
+    });
+    seek.addEventListener("input", () => { seeking = true; if(audio.duration) time.textContent = fmt(seek.value / 100 * audio.duration); });
+    seek.addEventListener("change", () => { if(audio.duration) audio.currentTime = seek.value / 100 * audio.duration; seeking = false; });
+    function showErr(){
+      if($(".perr", info)) return;
+      const e = document.createElement("div"); e.className = "perr";
+      e.textContent = "couldn't load this song. check the file name and folder.";
+      info.appendChild(e); setPlaying(false);
+    }
+    audio.addEventListener("error", showErr);
+  }
+  SONGS.forEach(s => {
+    const d = document.createElement("div"); d.className = "song";
+    const link = s.link && /^https?:\/\//i.test(s.link)
+      ? '<a href="' + encodeURI(s.link) + '" target="_blank" rel="noopener noreferrer">listen if you want</a>'
+      : (s.file ? '' : '<span class="nolink">(no file or link added)</span>');
+    d.innerHTML = '<div class="disc"></div><div><h3></h3><div class="artist"></div><div class="why"></div>' + link + '</div>';
+    $("h3", d).textContent = s.title; $(".artist", d).textContent = s.artist; $(".why", d).textContent = s.why;
+    const a = $("a", d); if(a) a.addEventListener("click", () => mark("music"));
+    if(s.file) buildPlayer(s, d);
+    songsEl.appendChild(d);
+  });
+  if(!SONGS.some(s => s.link)){  }
+
+ 
+  const nextComp = makeBag(COMPLIMENTS), nextOrb = makeBag(ORB);
+  const nextPlayB = makeBag(PLAY_B), nextPlayA = makeBag(PLAY_A);
+  function swapText(el, txt){
+    el.style.opacity = 0;
+    setTimeout(() => { el.textContent = txt; el.style.opacity = 1; }, reduceMotion ? 0 : 200);
+  }
+  $("#compBtn").addEventListener("click", function(){
+    swapText($("#compOut"), COMPLIMENTS[nextComp()]);
+    this.textContent = "one more";
+    const [x, y] = centerOf(this); burst(x, y - 10, 4, ["\u2665", "\u2728"]); mark("compliment");
+  });
+  $("#orb").addEventListener("click", function(){
+    swapText($("#orbOut"), ORB[nextOrb()]);
+    const [x, y] = centerOf(this); burst(x, y, 8); mark("orb");
+  });
+  $("#playBtn").addEventListener("click", function(){
+    swapText($("#playOut"), PLAY_A[nextPlayA()] + " " + PLAY_B[nextPlayB()]);
+    this.textContent = "again";
+    const [x, y] = centerOf(this); burst(x, y - 10, 3, ["\u2728"]); mark("play");
+  });
+
+ 
+  let eggTaps = 0, eggTimer;
+  $$("#about h2, #appreciate h2").forEach(h => h.addEventListener("click", () => {
+    eggTaps++; clearTimeout(eggTimer); eggTimer = setTimeout(() => eggTaps = 0, 1500);
+    if(eggTaps >= 5){ eggTaps = 0; showToast(EASTER_EGG, 5000); burst(innerWidth / 2, innerHeight / 2, 18); mark("egg"); }
+  }));
+  $("#secretStar").addEventListener("click", function(){
+    showToast(STAR_MSG, 5500);
+    const [x, y] = centerOf(this); burst(x, y, 16, ["\u2728", "\u2665"]); mark("star");
+  });
+
+  
+  const env = $("#envelope"), letterBox = $("#letterBox"), envHint = $("#envHint");
+  env.addEventListener("click", () => {
+    const open = !env.classList.contains("open");
+    env.classList.toggle("open", open);
+    env.setAttribute("aria-expanded", open);
+    letterBox.classList.toggle("show", open);
+    letterBox.setAttribute("aria-hidden", !open);
+    envHint.textContent = open ? "tap again to close it" : "tap the envelope";
+    if(open){
+      mark("letter");
+      setTimeout(() => letterBox.scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "center"}), 1500);
+    }
+  });
+
+  
+  const ringbox = $("#ringbox"), question = $("#question");
+  let boxOpened = false;
+  ringbox.addEventListener("click", () => {
+    if(boxOpened) return;
+    boxOpened = true;
+    ringbox.classList.add("open");
+    ringbox.disabled = true;
+    $("#propHint").style.visibility = "hidden";
+    const [x, y] = centerOf(ringbox); burst(x, y - 30, 12, ["\u2728", "\u2665"]);
+    question.classList.add("show");
+    setTimeout(() => question.scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "center"}), 1400);
+    mark("proposal");
+  });
+  
+  const PROP_KEY = "shayProposalResult";    
+  const stageEl = $("#stage"), resultEl = $("#result"), propFx = $("#propFx");
+  const STEPS = PROP.yes.stages.length;     
+  let path = null;     
+  let step = 0;        
+  let propBusy = false, fxTimer = null;
+
+  function saveResult(){ try{ sessionStorage.setItem(PROP_KEY, JSON.stringify({choice: path})); }catch(e){} }
+  function loadResult(){
+    try{
+      const v = JSON.parse(sessionStorage.getItem(PROP_KEY) || "null");
+      if(v && (v.choice === "yes" || v.choice === "no")) return v.choice;
+    }catch(e){}
+    return null;
+  }
+  function startFx(c){
+    if(reduceMotion || fxTimer) return;
+    fxTimer = setInterval(() => {
+      if(document.hidden || propFx.children.length > 16) return;
+      const h = document.createElement("span");
+      h.className = "drift";
+      h.textContent = (c === "yes" && Math.random() < .65) ? "♥" : "✨";
+      h.style.left = Math.random() * 100 + "%";
+      h.style.fontSize = (11 + Math.random() * 16) + "px";
+      h.style.setProperty("--x", (Math.random() * 60 - 30) + "px");
+      h.style.setProperty("--d", (7 + Math.random() * 5) + "s");
+      h.addEventListener("animationend", () => h.remove());
+      propFx.appendChild(h);
+    }, c === "yes" ? 450 : 900);
+  }
+  function mk(text, cls, fn){
+    const b = document.createElement("button");
+    b.className = cls; b.textContent = text;
+    b.addEventListener("click", () => fn(b));
+    return b;
+  }
+  function textEl(tag, cls, txt){ const e = document.createElement(tag); if(cls) e.className = cls; e.textContent = txt; return e; }
+
+  
+  function renderScreen(dir, celebrate){
+    stageEl.innerHTML = ""; resultEl.innerHTML = "";
+    stageEl.classList.toggle("dir-back", dir === "back");
+    if(step === 0){
+      stageEl.appendChild(textEl("h3", "", PROP.start.question));
+      const row = document.createElement("div"); row.className = "answers";
+      row.appendChild(mk(PROP.start.yes, "btn", b => choosePath("yes", b)));
+      row.appendChild(mk(PROP.start.no, "btn ghost", b => choosePath("no", b)));
+      stageEl.appendChild(row);
+    } else if(step <= STEPS){
+      const st = PROP[path].stages[step - 1];
+      stageEl.appendChild(textEl("p", "pmsg", st.msg));
+      if(st.ask) stageEl.appendChild(textEl("p", "pask", st.ask));
+      const row = document.createElement("div"); row.className = "answers";
+      row.appendChild(mk(st.btn, "btn", b => goForward(b)));
+      row.appendChild(mk(st.back, "btn ghost", b => goBack(b)));
+      stageEl.appendChild(row);
+    } else {
+      const data = PROP[path];
+      resultEl.appendChild(textEl("span", "big", data.big));
+      resultEl.appendChild(textEl("p", "", data.small));
+      startFx(path);
+      if(celebrate){
+        const cx = innerWidth / 2, cy = innerHeight / 2;
+        if(path === "yes"){
+          burst(cx, cy, 40, ["❤️", "♥", "✨", "💕", "💍"]);
+          setTimeout(() => burst(cx, cy, 28, ["♥", "✨"]), 450);
+          setTimeout(() => burst(cx, cy, 20, ["❤️", "✨"]), 900);
+        } else {
+          burst(cx, cy, 14, ["✨", "♥"]);
+        }
+      }
+    }
+  }
+
+  
+  function transition(change, dir, celebrate){
+    propBusy = true;
+    stageEl.classList.add("leaving");
+    setTimeout(() => {
+      change();
+      renderScreen(dir, celebrate);
+      stageEl.classList.remove("leaving");
+      setTimeout(() => { propBusy = false; }, reduceMotion ? 0 : 450);
+    }, reduceMotion ? 0 : 230);
+  }
+  function lockButtons(){ $$("button", stageEl).forEach(b => { b.disabled = true; }); }
+
+  function choosePath(c, btn){
+    if(propBusy || step !== 0) return;
+    lockButtons();
+    const [x, y] = centerOf(btn); burst(x, y, 8, ["♥", "✨"]);
+    transition(() => { path = c; step = 1; }, "fwd");
+  }
+  function goForward(btn){
+    if(propBusy || !path || step < 1 || step > STEPS) return;
+    lockButtons();
+    const [x, y] = centerOf(btn); burst(x, y, 6, path === "yes" ? ["♥", "✨"] : ["✨"]);
+    transition(() => {
+      step++;
+      if(step > STEPS) saveResult();     
+    }, "fwd", true);
+  }
+  function goBack(btn){
+    if(propBusy || step < 1 || step > STEPS) return;
+    lockButtons();
+    transition(() => {
+      step--;
+      if(step === 0) path = null;        
+    }, "back");
+  }
+
+  
+  (function initProposal(){
+    const saved = loadResult();
+    if(saved){
+      boxOpened = true;
+      ringbox.classList.add("open"); ringbox.disabled = true;
+      $("#propHint").style.visibility = "hidden";
+      question.classList.add("show");
+      path = saved; step = STEPS + 1;
+    }
+    renderScreen("fwd", false);
+  })();
+
+ 
+  $("#lastBtn").addEventListener("click", function(){
+    const s = $("#secret"); const open = !s.classList.contains("show");
+    s.classList.toggle("show", open);
+    this.textContent = open ? "okay, that's really it" : "one last thing";
+    if(open){
+      const [x, y] = centerOf(this); burst(x, y, 24);
+      setTimeout(() => s.scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "center"}), 500);
+      mark("final");
+    }
+  });
+
+  
+  let heartTimer = null;
+  function startFinalHearts(){
+    if(heartTimer || reduceMotion) return;
+    const box = $("#finalStars");
+    heartTimer = setInterval(() => {
+      if(box.children.length > 14) return;
+      const h = document.createElement("span");
+      h.className = "drift"; h.textContent = Math.random() < .3 ? "\u2728" : "\u2665";
+      h.style.left = Math.random() * 100 + "%";
+      h.style.fontSize = (10 + Math.random() * 16) + "px";
+      h.style.setProperty("--x", (Math.random() * 60 - 30) + "px");
+      h.style.setProperty("--d", (7 + Math.random() * 5) + "s");
+      h.addEventListener("animationend", () => h.remove());
+      box.appendChild(h);
+    }, 700);
+  }
+  function stopFinalHearts(){ clearInterval(heartTimer); heartTimer = null; }
+})();
+</script>
+</body>
+</html>
