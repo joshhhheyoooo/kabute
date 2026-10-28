@@ -204,7 +204,7 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,6.5vw,2.7rem)
 .env-hint{margin-top:14px;font-size:.85rem;color:var(--text-dim)}
 .letter{width:100%;max-width:520px;overflow:hidden;max-height:0;opacity:0;transform:translateY(-30px);margin-top:0;
   transition:max-height 1.2s ease .5s,opacity .8s ease .6s,transform 1s ease .55s,margin .6s}
-.letter.show{max-height:1600px;opacity:1;transform:none;margin-top:22px}
+.letter.show{max-height:3000px;opacity:1;transform:none;margin-top:22px}
 .paper{background:linear-gradient(180deg,#fff9f3,#fbe9e4);color:#4a1a22;border-radius:10px;padding:28px 24px;font-family:var(--hand);font-size:1.08rem;line-height:1.85;box-shadow:0 18px 40px rgba(0,0,0,.45);position:relative}
 .paper::before{content:"";position:absolute;inset:8px;border:1px dashed rgba(193,18,31,.25);border-radius:6px;pointer-events:none}
 .paper p{margin-bottom:12px}
@@ -258,7 +258,7 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,6.5vw,2.7rem)
 #final .wrap{text-align:center;position:relative;z-index:2}
 #final h2{font-family:var(--hand);font-size:clamp(1.5rem,5.5vw,2.1rem);line-height:1.5}
 .secret{margin-top:26px;padding:22px;border-radius:var(--radius);font-family:var(--hand);font-size:1.15rem;line-height:1.7;background:linear-gradient(135deg,rgba(193,18,31,.35),rgba(43,7,17,.8));border:1px solid var(--crimson-bright);box-shadow:0 0 50px rgba(230,57,70,.35);max-height:0;overflow:hidden;opacity:0;padding-top:0;padding-bottom:0;border-width:0;transition:max-height 1s ease,opacity 1s,padding .6s}
-.secret.show{max-height:600px;opacity:1;padding:22px;border-width:1px}
+.secret.show{max-height:3000px;opacity:1;padding:22px;border-width:1px}
 footer{position:relative;z-index:5;text-align:center;padding:18px 0 34px;font-size:.78rem;color:var(--text-dim);opacity:.6}
 
 
@@ -741,7 +741,7 @@ const PROP = {
       { msg: "last chance to reconsider HAHAHA. sure ka na talaga??", btn: "YES, FINAL ANSWER ", back: "I'M STILL THINKING " },
       { msg: "okayyy, final answer na talaga? HAHAHA", btn: "FINAL ANSWER ", back: "HOLD ON HAHAHA" }
     ],
-    big: "HAHAHAHA okayyy, i'll respect the verdict, your honor 😭❤️",
+    big: "HAHAHAHA okayyy, i'll respect the verdict, your honor ",
     small: "thank u for playing along with my little proposal hshsh."
   }
 };
@@ -875,7 +875,7 @@ const PROP = {
   });
   const dotFor = id => $("#nav button[data-target='" + id + "']");
 
-  /* observers */
+ 
   const revealObs = new IntersectionObserver(es => {
     es.forEach(e => { if(e.isIntersecting){ e.target.classList.add("in"); revealObs.unobserve(e.target); } });
   }, {threshold: .12});
@@ -1030,7 +1030,7 @@ const PROP = {
   const songsEl = $("#songs");
   let currentAudio = null;
   function fmt(t){ if(!isFinite(t)) return "0:00"; const m = Math.floor(t / 60), s = Math.floor(t % 60); return m + ":" + (s < 10 ? "0" : "") + s; }
-  /* in-page player: plays only when she taps play, one song at a time, never autoplays */
+  
   function buildPlayer(s, card){
     const audio = new Audio();
     audio.preload = "none";
@@ -1281,7 +1281,7 @@ const PROP = {
     this.textContent = open ? "okay, that's really it" : "one last thing";
     if(open){
       const [x, y] = centerOf(this); burst(x, y, 24);
-      setTimeout(() => s.scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "center"}), 500);
+      setTimeout(() => s.scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: (s.offsetHeight > innerHeight * 0.8) ? "start" : "center"}), 1100);
       mark("final");
     }
   });
